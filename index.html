@@ -15,12 +15,12 @@
   ║  IMAGE SLOTS — search "IMG:" to find every photo on the page.          ║
   ║  All images are real stock (Unsplash). To use your own Jaan M.         ║
   ║  Studios photos, just replace the URL in each marked spot.             ║
-  ║  The 5 transformation frames live in the JS config "TX_STAGES" below.  ║
-  ║  For a perfect morph, use the SAME room/angle for all 5 frames         ║
-  ║  (see the GPT image prompts I provided in chat).                       ║
+  ║  The 4 transformation frames are in /images: raw, plaster, surfaces,   ║
+  ║  finished (.jpg). They share one camera angle for a seamless morph.    ║
+  ║  Until those files exist, each falls back to a stock photo.            ║
   ╚══════════════════════════════════════════════════════════════════════╝
 -->
-<link rel="preload" as="image" href="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=85&w=1920&auto=format&fit=crop" fetchpriority="high">
+<link rel="preload" as="image" href="images/finished.jpg" fetchpriority="high">
 
 <style>
   :root{
@@ -135,30 +135,29 @@
   .on-dark .sec-head h2 em{color:var(--gold-2)}
   .on-dark .sec-head p{color:rgba(244,238,226,.72)}
 
-  /* ===== TRANSFORMATION — real-photo scroll scrub ===== */
-  .transform{background:var(--navy-2);color:var(--ivory)}
-  .transform-track{height:560vh;position:relative}
-  .transform-sticky{position:sticky;top:0;height:100vh;display:flex;align-items:center;overflow:hidden}
-  .tx-bg{position:absolute;inset:0;background:radial-gradient(80% 60% at 50% 45%,rgba(76,86,64,.2),transparent 70%)}
-  .tx-inner{position:relative;z-index:2;width:100%;max-width:1200px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:310px 1fr;gap:50px;align-items:center}
-  .tx-rail .eyebrow{margin-bottom:18px}
-  .tx-rail h2{font-size:clamp(28px,3.2vw,46px);font-weight:300;margin-bottom:30px;line-height:1.08}
-  .tx-rail h2 em{font-style:italic;color:var(--gold-2)}
-  .tx-stage{display:flex;gap:14px;align-items:center;padding:10px 0;opacity:.32;transition:opacity .45s,transform .45s;transform:translateX(-4px)}
-  .tx-stage.active{opacity:1;transform:translateX(0)}
-  .tx-stage .dot{width:9px;height:9px;border-radius:50%;border:1px solid var(--gold);flex-shrink:0;transition:background .4s,box-shadow .4s}
-  .tx-stage.active .dot{background:var(--gold);box-shadow:0 0 0 5px rgba(193,146,74,.16)}
-  .tx-stage .lbl{font-size:14.5px;font-weight:600}
-  .tx-stage .lbl small{display:block;font-weight:300;font-size:12px;color:rgba(244,238,226,.55);text-transform:none}
-  .tx-progress{margin-top:28px;height:2px;background:var(--line-light);border-radius:2px;overflow:hidden}
-  .tx-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--olive-2),var(--gold))}
-  .tx-stack{position:relative;width:100%;aspect-ratio:16/10.2;border-radius:12px;overflow:hidden;box-shadow:var(--shadow);background:#0a1120}
+  /* ===== TRANSFORMATION — full-bleed cinematic scroller ===== */
+  .transform{background:#0a1120;color:var(--ivory)}
+  .transform-track{height:520vh;position:relative}
+  .transform-sticky{position:sticky;top:0;height:100vh;overflow:hidden;background:#0a1120}
+  .tx-stack{position:absolute;inset:0}
   .tx-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;will-change:opacity,transform}
-  .tx-grade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(to top,rgba(8,14,26,.6),transparent 42%),linear-gradient(to right,rgba(8,14,26,.28),transparent 30%)}
-  .tx-stamp{position:absolute;left:18px;bottom:16px;z-index:3;display:flex;align-items:center;gap:11px;color:var(--ivory)}
-  .tx-stamp .n{font-family:var(--display);font-size:30px;color:var(--gold-2);line-height:1;font-weight:300}
-  .tx-stamp .t{font-size:12px;letter-spacing:.2em;text-transform:uppercase}
-  .tx-hint{text-align:center;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:rgba(244,238,226,.4);margin-top:16px}
+  .tx-veil{position:absolute;inset:0;pointer-events:none;background:linear-gradient(to top,rgba(8,12,22,.9),rgba(8,12,22,.1) 46%,rgba(8,12,22,.45))}
+  .tx-overlay{position:absolute;left:0;right:0;bottom:7vh;z-index:3}
+  .tx-overlay .eyebrow{margin-bottom:14px}
+  .tx-h{font-size:clamp(27px,3.7vw,52px);font-weight:300;line-height:1.1;max-width:20ch;margin-bottom:26px}
+  .tx-h em{font-style:italic;color:var(--gold-2)}
+  .tx-now{display:flex;align-items:baseline;gap:16px;margin-bottom:20px}
+  .tx-step-num{font-family:var(--display);font-size:clamp(34px,4vw,48px);color:var(--gold-2);line-height:1;font-weight:300;min-width:1.6em}
+  .tx-step-label{font-size:clamp(15px,1.8vw,19px);letter-spacing:.02em;font-weight:500}
+  .tx-dots{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+  .tx-dot{background:rgba(244,238,226,.07);border:1px solid var(--line-light);color:rgba(244,238,226,.72);padding:9px 16px;border-radius:30px;font-family:var(--body);font-size:12px;font-weight:600;letter-spacing:.04em;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all .3s;min-height:38px}
+  .tx-dot span{width:6px;height:6px;border-radius:50%;background:rgba(244,238,226,.4);transition:background .3s}
+  .tx-dot:hover{border-color:var(--gold)}
+  .tx-dot:focus-visible{outline:2px solid var(--gold-2);outline-offset:2px}
+  .tx-dot.active{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+  .tx-dot.active span{background:var(--navy)}
+  .tx-progress{height:2px;background:var(--line-light);max-width:520px;border-radius:2px;overflow:hidden}
+  .tx-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--olive-2),var(--gold))}
 
   /* before/after sliders (real photos) */
   .ba-wrap{display:grid;grid-template-columns:1fr 1fr;gap:28px}
@@ -348,10 +347,7 @@
   @media(max-width:1024px){
     .heritage-grid,.quote-grid{grid-template-columns:1fr;gap:46px}
     .foot-grid,.process-grid,.resi-grid,.heritage-list,.g-grid,.testi-grid,.ba-wrap{grid-template-columns:1fr 1fr}
-    .tx-inner{grid-template-columns:1fr;gap:28px}
-    .tx-rail{display:flex;flex-wrap:wrap;gap:8px 24px;align-items:center}
-    .tx-rail h2,.tx-rail .eyebrow,.tx-progress{flex-basis:100%}
-    .tx-stage{padding:4px 0}.tx-stage .lbl small{display:none}
+    .tx-h{max-width:24ch}
   }
   @media(max-width:760px){
     .wrap{padding:0 20px}.pad{padding:74px 0}
@@ -363,8 +359,8 @@
     .process-grid,.foot-grid,.form-row,.heritage-list{grid-template-columns:1fr}
     .form-row{gap:0}.quote-info,.quote-form{padding:42px 26px}
     .hero-meta{gap:30px}.step .line{display:none}
-    .transform-track{height:430vh}.tx-inner{padding:0 20px}
-    .tx-stack{aspect-ratio:4/3}
+    .transform-track{height:380vh}
+    .tx-overlay{bottom:86px}
     .wa-float{display:none}.mobile-cta{display:flex}
     body{padding-bottom:64px}
   }
@@ -375,7 +371,7 @@
     .reveal{opacity:1;transform:none}
     .reveal-card{transform:none!important}
     /* show the finished room when motion is reduced */
-    .tx-img[data-stage="4"]{opacity:1!important}
+    .tx-img[data-stage="3"]{opacity:1!important}
   }
 </style>
 </head>
@@ -412,7 +408,7 @@
   <div class="hero-glow two"></div>
   <div class="wrap">
     <div class="hero-est anim d1"><span class="eyebrow center">Painting &amp; Interior Design · Lahore · Since 1984</span></div>
-    <h1 class="anim d2">Your dream. <em>Your home.</em><span class="nl">Realised.</span></h1>
+    <h1 class="anim d2">Your dream. Your home,<span class="nl"><em>beautifully realised.</em></span></h1>
     <p class="hero-sub anim d3">From a bare structure to a finished, fully furnished modern home — Jaan M. Studios has shaped Pakistan's most distinguished residences and landmarks for four decades.</p>
     <div class="hero-cta anim d4">
       <a href="#contact" class="btn btn-primary">Get a Free Quote</a>
@@ -424,7 +420,7 @@
       <div><span data-count="25">0</span><small>Landmark Projects</small></div>
     </div>
   </div>
-  <div class="scroll-cue">Scroll</div>
+  <div class="scroll-cue" aria-hidden="true"></div>
 </section>
 
 <!-- APPLE-STYLE TILT REVEAL -->
@@ -435,8 +431,8 @@
       <h2>Spaces people <em>never want to leave.</em></h2>
     </div>
     <div class="reveal-card" id="revealCard">
-      <!-- IMG: hero reveal card -->
-      <img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=85&w=1920&auto=format&fit=crop" alt="A finished luxury open-plan living room with warm wood, soft grey sofas and natural light" width="1920" height="1080">
+      <!-- IMG: hero reveal card (your finished room; falls back to stock until images/finished.jpg exists) -->
+      <img src="images/finished.jpg" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=85&w=1920&auto=format&fit=crop'" alt="A finished luxury double-height living room by Jaan M. Studios — deep navy sofas, marble feature wall and warm lighting" width="1920" height="1080">
       <div class="rc-badge">Painting &amp; Interiors · <b>Raw to ready</b></div>
     </div>
   </div>
@@ -451,34 +447,31 @@
   </div></div>
 </section>
 
-<!-- ===== TRANSFORMATION — real-photo scroll scrub ===== -->
+<!-- ===== TRANSFORMATION — full-bleed cinematic scroller ===== -->
 <section class="transform" id="transform">
   <div class="transform-track" id="txTrack">
     <div class="transform-sticky">
-      <div class="tx-bg"></div>
-      <div class="tx-inner">
-        <div class="tx-rail">
+      <!-- IMG: transformation frames (raw -> finished). Save your 4 photos in /images.
+           Each falls back to stock until your file exists. -->
+      <div class="tx-stack" id="txStack" role="img" aria-label="A double-height living room transforming from a bare concrete shell, through plaster and paint and marble finishes, to a fully furnished and styled home by Jaan M. Studios">
+        <img class="tx-img" data-stage="0" alt="" aria-hidden="true" src="images/raw.jpg" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1600&auto=format&fit=crop'">
+        <img class="tx-img" data-stage="1" alt="" aria-hidden="true" src="images/plaster.jpg" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1574359411659-15573a27fd0c?q=80&w=1600&auto=format&fit=crop'">
+        <img class="tx-img" data-stage="2" alt="" aria-hidden="true" src="images/surfaces.jpg" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1600&auto=format&fit=crop'">
+        <img class="tx-img" data-stage="3" alt="" aria-hidden="true" src="images/finished.jpg" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=80&w=1600&auto=format&fit=crop'">
+      </div>
+      <div class="tx-veil"></div>
+      <div class="tx-overlay">
+        <div class="wrap">
           <span class="eyebrow">The Transformation</span>
-          <h2>Scroll a bare shell into a <em>finished home.</em></h2>
-          <div class="tx-stage" data-stage="0"><span class="dot"></span><span class="lbl">Bare Shell<small>The raw, unfinished space</small></span></div>
-          <div class="tx-stage" data-stage="1"><span class="dot"></span><span class="lbl">Colour &amp; Paint<small>Real paint on the walls</small></span></div>
-          <div class="tx-stage" data-stage="2"><span class="dot"></span><span class="lbl">Surfaces<small>Flooring &amp; glazing</small></span></div>
-          <div class="tx-stage" data-stage="3"><span class="dot"></span><span class="lbl">Furnishing<small>Pieces placed with intent</small></span></div>
-          <div class="tx-stage" data-stage="4"><span class="dot"></span><span class="lbl">Styled &amp; Lit<small>Warm, finished, yours</small></span></div>
-          <div class="tx-progress"><i id="txBar"></i></div>
-        </div>
-        <div>
-          <!-- IMG: transformation frames (5). Same room/angle = perfect morph. URLs also set in JS below. -->
-          <div class="tx-stack" id="txStack" role="img" aria-label="A space transforming from a bare shell, through painting and surfaces, to a fully furnished and styled home">
-            <img class="tx-img" data-stage="0" alt="" aria-hidden="true" src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1600&auto=format&fit=crop">
-            <img class="tx-img" data-stage="1" alt="" aria-hidden="true" src="https://images.unsplash.com/photo-1574359411659-15573a27fd0c?q=80&w=1600&auto=format&fit=crop">
-            <img class="tx-img" data-stage="2" alt="" aria-hidden="true" src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1600&auto=format&fit=crop">
-            <img class="tx-img" data-stage="3" alt="" aria-hidden="true" src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1600&auto=format&fit=crop">
-            <img class="tx-img" data-stage="4" alt="" aria-hidden="true" src="https://images.unsplash.com/photo-1567767292278-a4f21aa2d36e?q=80&w=1600&auto=format&fit=crop">
-            <div class="tx-grade"></div>
-            <div class="tx-stamp"><span class="n" id="txNum">01</span><span class="t" id="txLabel">Bare Shell</span></div>
+          <h2 class="tx-h">From a bare concrete shell to a home you <em>never want to leave.</em></h2>
+          <div class="tx-now"><span class="tx-step-num" id="txNum">01</span><span class="tx-step-label" id="txLabel">Bare Concrete Shell</span></div>
+          <div class="tx-dots" id="txDots">
+            <button class="tx-dot active" type="button" data-stage="0"><span></span>Shell</button>
+            <button class="tx-dot" type="button" data-stage="1"><span></span>Plaster &amp; Paint</button>
+            <button class="tx-dot" type="button" data-stage="2"><span></span>Finishes</button>
+            <button class="tx-dot" type="button" data-stage="3"><span></span>Styled</button>
           </div>
-          <p class="tx-hint">Keep scrolling to watch it come together</p>
+          <div class="tx-progress"><i id="txBar"></i></div>
         </div>
       </div>
     </div>
@@ -497,22 +490,22 @@
       <div>
         <div class="ba" data-ba>
           <span class="ba-tag left">Before</span><span class="ba-tag right">After</span>
-          <!-- IMG: before/after #1 -->
-          <div class="ba-layer ba-before"><img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1400&auto=format&fit=crop" alt="An empty, unfinished interior before design work" loading="lazy"></div>
-          <div class="ba-layer ba-after" data-after><img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?q=80&w=1400&auto=format&fit=crop" alt="The same style of room finished and furnished in soft, warm tones" loading="lazy"></div>
+          <!-- IMG: before/after #1 (raw concrete -> finished) -->
+          <div class="ba-layer ba-before"><img src="images/raw.jpg" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1400&auto=format&fit=crop'" alt="A bare concrete shell before work begins" loading="lazy"></div>
+          <div class="ba-layer ba-after" data-after><img src="images/finished.jpg" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=80&w=1400&auto=format&fit=crop'" alt="The same room fully finished, furnished and styled" loading="lazy"></div>
           <div class="ba-handle" data-handle></div>
         </div>
-        <p class="ba-title">Living Space · DHA Lahore</p>
+        <p class="ba-title">Concrete → Finished · DHA Lahore</p>
       </div>
       <div>
         <div class="ba" data-ba>
           <span class="ba-tag left">Before</span><span class="ba-tag right">After</span>
-          <!-- IMG: before/after #2 -->
-          <div class="ba-layer ba-before"><img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1400&auto=format&fit=crop" alt="A bare, unfinished room before painting and furnishing" loading="lazy"></div>
-          <div class="ba-layer ba-after" data-after><img src="https://images.unsplash.com/photo-1567767292278-a4f21aa2d36e?q=80&w=1400&auto=format&fit=crop" alt="A warm, fully furnished lounge with natural light after completion" loading="lazy"></div>
+          <!-- IMG: before/after #2 (plaster & paint -> finished) -->
+          <div class="ba-layer ba-before"><img src="images/plaster.jpg" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1574359411659-15573a27fd0c?q=80&w=1400&auto=format&fit=crop'" alt="The room mid-project, plastered and being painted" loading="lazy"></div>
+          <div class="ba-layer ba-after" data-after><img src="images/finished.jpg" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=80&w=1400&auto=format&fit=crop'" alt="The same room fully finished and furnished" loading="lazy"></div>
           <div class="ba-handle" data-handle></div>
         </div>
-        <p class="ba-title">Lounge · 1 Kanal Residence</p>
+        <p class="ba-title">In Progress → Finished · 1 Kanal Residence</p>
       </div>
     </div>
   </div>
@@ -793,20 +786,26 @@
 
   // ---- Transformation config: swap these 5 URLs for your own room sequence ----
   const TX_STAGES = [
-    {num:'01', label:'Bare Shell'},
-    {num:'02', label:'Colour & Paint'},
-    {num:'03', label:'Surfaces'},
-    {num:'04', label:'Furnishing'},
-    {num:'05', label:'Styled & Lit'}
+    {num:'01', label:'Bare Concrete Shell'},
+    {num:'02', label:'Plaster & Paint'},
+    {num:'03', label:'Surfaces & Finishes'},
+    {num:'04', label:'Styled & Furnished'}
   ];
 
   const txTrack=document.getElementById('txTrack');
   const txImgs=[...document.querySelectorAll('.tx-img')];
-  const txStages=[...document.querySelectorAll('.tx-stage')];
+  const txDots=[...document.querySelectorAll('.tx-dot')];
   const txBar=document.getElementById('txBar');
   const txNum=document.getElementById('txNum');
   const txLabel=document.getElementById('txLabel');
   const N=txImgs.length, seg=1/(N-1);
+
+  // click a stage chip to glide there
+  txDots.forEach((d,i)=>d.addEventListener('click',()=>{
+    const total=txTrack.offsetHeight-window.innerHeight;
+    const trackTop=txTrack.getBoundingClientRect().top+window.scrollY;
+    window.scrollTo({top:Math.round(trackTop+(i/(N-1))*total), behavior:'smooth'});
+  }));
 
   const revealCard=document.getElementById('revealCard');
   const revealTitle=document.getElementById('revealTitle');
@@ -852,7 +851,7 @@
     const idx=clamp(Math.round(p*(N-1)),0,N-1);
     if(idx!==lastStage){
       lastStage=idx;
-      txStages.forEach((s,i)=>s.classList.toggle('active',i===idx));
+      txDots.forEach((s,i)=>s.classList.toggle('active',i===idx));
       txNum.textContent=TX_STAGES[idx].num;
       txLabel.textContent=TX_STAGES[idx].label;
     }
@@ -876,7 +875,7 @@
     // static, accessible end-states
     txImgs.forEach((im,i)=>{im.style.opacity=i===N-1?'1':'0';});
     txBar.style.width='100%';
-    txStages.forEach((s,i)=>s.classList.toggle('active',i===N-1));
+    txDots.forEach((s,i)=>s.classList.toggle('active',i===N-1));
     txNum.textContent=TX_STAGES[N-1].num; txLabel.textContent=TX_STAGES[N-1].label;
   }else{
     requestAnimationFrame(render);
