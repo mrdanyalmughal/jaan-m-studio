@@ -1,0 +1,9 @@
+# Ignore everything in this folder by default (it holds other, unrelated projects)
+/*
+
+# Re-include ONLY the Jaan M. Studios website
+!/index.html
+!/.gitignore
+!/README.md
+!/netlify.toml
+!/images

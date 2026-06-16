@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jaan M. Studios | Painting &amp; Interior Design Since 1984</title>
+<meta name="description" content="Jaan M. Studios. Four decades transforming bare structures into finished, furnished modern homes across Pakistan. Painting and interior design since 1984, Lahore.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,400..500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!--
+  ╔══════════════════════════════════════════════════════════════════════╗
+  ║  IMAGE SLOTS — search "IMG:" to find every photo on the page.          ║
+  ║  All images are real stock (Unsplash). To use your own Jaan M.         ║
+  ║  Studios photos, just replace the URL in each marked spot.             ║
+  ║  The 5 transformation frames live in the JS config "TX_STAGES" below.  ║
+  ║  For a perfect morph, use the SAME room/angle for all 5 frames         ║
+  ║  (see the GPT image prompts I provided in chat).                       ║
+  ╚══════════════════════════════════════════════════════════════════════╝
+-->
+<link rel="preload" as="image" href="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=85&w=1920&auto=format&fit=crop" fetchpriority="high">
+
+<style>
+  :root{
+    --navy:#13203b; --navy-2:#0c1526; --ivory:#f4eee2; --cream:#fbf8f1;
+    --olive:#4c5640; --olive-2:#616c50; --rose:#cca39b; --rose-2:#dcbab3;
+    --gold:#c1924a; --gold-2:#d8a85c; --ink:#1b2233; --ink-soft:#414a5c;
+    --line:rgba(19,32,59,.12); --line-light:rgba(244,238,226,.16);
+    --shadow:0 40px 90px -35px rgba(12,21,38,.55);
+    --shadow-soft:0 22px 55px -28px rgba(12,21,38,.4);
+    --maxw:1240px;
+    --display:"Fraunces",Georgia,serif;
+    --body:"Manrope",-apple-system,sans-serif;
+    --ease:cubic-bezier(.2,.7,.25,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--body);background:var(--ivory);color:var(--navy);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  ::selection{background:var(--gold);color:var(--navy)}
+  a{text-decoration:none;color:inherit}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px}
+  h1,h2,h3,h4{font-family:var(--display);font-weight:400;line-height:1.05;letter-spacing:-.012em}
+  .eyebrow{font-family:var(--body);font-size:12px;letter-spacing:.28em;text-transform:uppercase;font-weight:600;color:var(--gold);display:inline-flex;align-items:center;gap:12px}
+  .eyebrow::before{content:"";width:30px;height:1px;background:var(--gold)}
+  .eyebrow.center{justify-content:center}
+  .eyebrow.center::after{content:"";width:30px;height:1px;background:var(--gold)}
+  .on-dark .eyebrow{color:var(--gold-2)}
+
+  /* buttons */
+  .btn{display:inline-flex;align-items:center;gap:10px;cursor:pointer;border:none;font-family:var(--body);font-size:13px;font-weight:600;letter-spacing:.05em;padding:15px 28px;border-radius:2px;transition:all .4s var(--ease);text-transform:uppercase;min-height:44px}
+  .btn:focus-visible{outline:2px solid var(--gold-2);outline-offset:3px}
+  .btn-primary{background:var(--gold);color:var(--navy)}
+  .btn-primary:hover{background:var(--navy);color:var(--gold);transform:translateY(-2px)}
+  .btn-ghost{background:transparent;color:var(--ivory);border:1px solid var(--line-light)}
+  .btn-ghost:hover{background:var(--ivory);color:var(--navy);border-color:var(--ivory)}
+  a:focus-visible{outline:2px solid var(--gold-2);outline-offset:3px}
+
+  /* nav */
+  header{position:fixed;top:0;left:0;right:0;z-index:1000;transition:background .5s,box-shadow .5s,padding .5s;padding:22px 0}
+  header.scrolled{background:rgba(244,238,226,.9);backdrop-filter:blur(16px);box-shadow:0 1px 0 var(--line);padding:13px 0}
+  .nav{display:flex;align-items:center;justify-content:space-between}
+  .brand{display:flex;flex-direction:column;line-height:1;color:var(--ivory);transition:color .5s}
+  header.scrolled .brand{color:var(--navy)}
+  .brand .mark{font-family:var(--display);font-size:23px;letter-spacing:.02em;font-weight:500}
+  .brand .mark b{color:var(--gold);font-weight:500}
+  .brand .sub{font-family:var(--body);font-size:9.5px;letter-spacing:.34em;text-transform:uppercase;margin-top:5px;opacity:.7}
+  .nav-links{display:flex;align-items:center;gap:34px;list-style:none}
+  .nav-links a{font-size:13.5px;font-weight:500;color:var(--ivory);position:relative;transition:color .3s}
+  header.scrolled .nav-links a{color:var(--ink-soft)}
+  .nav-links a::after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:1px;background:var(--gold);transition:width .3s}
+  .nav-links a:hover::after{width:100%}
+  .nav .btn{padding:12px 22px}
+  .burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:6px;min-height:44px;min-width:44px;align-items:center;justify-content:center}
+  .burger span{width:26px;height:2px;background:var(--ivory);transition:.3s;display:block}
+  header.scrolled .burger span{background:var(--navy)}
+  .drawer{position:fixed;inset:0;z-index:1500;background:var(--navy);transform:translateX(100%);transition:transform .55s var(--ease);display:flex;flex-direction:column;justify-content:center;padding:40px}
+  .drawer.open{transform:translateX(0)}
+  .drawer a{color:var(--ivory);font-family:var(--display);font-size:30px;padding:12px 0;border-bottom:1px solid var(--line-light)}
+  .drawer .btn{margin-top:24px;justify-content:center}
+  .drawer .close{position:absolute;top:26px;right:28px;background:none;border:none;color:var(--ivory);font-size:34px;cursor:pointer;line-height:1}
+
+  /* hero */
+  .hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;color:var(--ivory);
+    background:radial-gradient(120% 90% at 88% 6%,rgba(204,163,155,.16),transparent 50%),radial-gradient(90% 80% at 6% 96%,rgba(76,86,64,.34),transparent 52%),linear-gradient(165deg,#1a2740 0%,#13203b 55%,#0c1526 100%)}
+  .hero-glow{position:absolute;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(193,146,74,.16),transparent 70%);top:-140px;right:-80px;filter:blur(20px)}
+  .hero-glow.two{left:-120px;top:auto;bottom:-180px;right:auto;background:radial-gradient(circle,rgba(76,86,64,.3),transparent 70%)}
+  .hero .wrap{position:relative;z-index:2;padding-top:120px;padding-bottom:90px;max-width:980px}
+  .hero h1{font-size:clamp(44px,6.4vw,92px);font-weight:300;letter-spacing:-.024em;margin-top:30px}
+  .hero h1 em{font-style:italic;color:var(--rose-2);font-weight:400}
+  .hero h1 .nl{display:block}
+  .hero-sub{margin:28px auto 0;max-width:54ch;font-size:clamp(15px,1.6vw,19px);color:rgba(244,238,226,.76);font-weight:300;line-height:1.75}
+  .hero-cta{margin-top:40px;display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+  .hero-meta{margin-top:64px;display:flex;gap:54px;flex-wrap:wrap;justify-content:center;border-top:1px solid var(--line-light);padding-top:30px;max-width:680px;margin-inline:auto}
+  .hero-meta span{display:block;font-family:var(--display);font-size:clamp(30px,3.4vw,40px);color:var(--gold-2);line-height:1}
+  .hero-meta small{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(244,238,226,.55);margin-top:8px;display:block}
+  .hero .anim{opacity:0;animation:fadeUp 1s var(--ease) forwards}
+  .hero .d1{animation-delay:.05s}.hero .d2{animation-delay:.22s}.hero .d3{animation-delay:.4s}.hero .d4{animation-delay:.58s}.hero .d5{animation-delay:.76s}
+  .scroll-cue{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:3;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:rgba(244,238,226,.42);display:flex;flex-direction:column;align-items:center;gap:9px}
+  .scroll-cue::after{content:"";width:1px;height:42px;background:linear-gradient(var(--gold),transparent);animation:cue 2.2s infinite}
+  @keyframes cue{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}50.1%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+  /* reveal tilt card (Apple-style scroll reveal) */
+  .reveal-scene{background:var(--ivory);padding:30px 0 96px}
+  .reveal-persp{perspective:1500px;max-width:1120px;margin:0 auto;padding:0 24px}
+  .reveal-title{text-align:center;max-width:780px;margin:0 auto 30px;will-change:transform,opacity}
+  .reveal-title h2{font-size:clamp(30px,4.4vw,56px);font-weight:300;margin-top:18px}
+  .reveal-title h2 em{font-style:italic;color:var(--gold)}
+  .reveal-card{position:relative;border-radius:26px;overflow:hidden;border:6px solid #1a2336;background:#0c1526;box-shadow:0 50px 100px -42px rgba(12,21,38,.72);will-change:transform;transform-style:preserve-3d}
+  .reveal-card img{width:100%;height:clamp(320px,58vh,660px);object-fit:cover}
+  .rc-badge{position:absolute;left:20px;bottom:20px;z-index:3;background:rgba(12,21,38,.6);backdrop-filter:blur(8px);border:1px solid var(--line-light);color:var(--ivory);font-size:11px;letter-spacing:.16em;text-transform:uppercase;padding:9px 15px;border-radius:30px}
+  .rc-badge b{color:var(--gold-2);font-weight:600}
+
+  /* clients */
+  .clients{background:var(--navy-2);color:var(--ivory);padding:50px 0;overflow:hidden}
+  .clients-label{text-align:center;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:rgba(244,238,226,.5);margin-bottom:30px}
+  .marquee{display:flex;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+  .marquee-track{display:flex;gap:58px;padding-left:58px;animation:scroll 40s linear infinite;white-space:nowrap}
+  .clients:hover .marquee-track{animation-play-state:paused}
+  @keyframes scroll{to{transform:translateX(-50%)}}
+  .client-logo{font-family:var(--display);font-size:24px;font-weight:500;color:rgba(244,238,226,.6);transition:color .3s;display:flex;align-items:center;gap:13px}
+  .client-logo:hover{color:var(--gold-2)}
+  .client-logo::before{content:"✦";color:var(--gold);font-size:12px}
+
+  /* sections */
+  .pad{padding:118px 0}
+  .sec-head{max-width:700px;margin-bottom:60px}
+  .sec-head.center{margin-left:auto;margin-right:auto;text-align:center}
+  .sec-head h2{font-size:clamp(34px,5vw,62px);margin-top:22px;font-weight:300}
+  .sec-head h2 em{font-style:italic;color:var(--gold)}
+  .sec-head p{margin-top:20px;color:var(--ink-soft);font-size:17px;font-weight:300;opacity:.9}
+  .on-dark .sec-head h2 em{color:var(--gold-2)}
+  .on-dark .sec-head p{color:rgba(244,238,226,.72)}
+
+  /* ===== TRANSFORMATION — real-photo scroll scrub ===== */
+  .transform{background:var(--navy-2);color:var(--ivory)}
+  .transform-track{height:560vh;position:relative}
+  .transform-sticky{position:sticky;top:0;height:100vh;display:flex;align-items:center;overflow:hidden}
+  .tx-bg{position:absolute;inset:0;background:radial-gradient(80% 60% at 50% 45%,rgba(76,86,64,.2),transparent 70%)}
+  .tx-inner{position:relative;z-index:2;width:100%;max-width:1200px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:310px 1fr;gap:50px;align-items:center}
+  .tx-rail .eyebrow{margin-bottom:18px}
+  .tx-rail h2{font-size:clamp(28px,3.2vw,46px);font-weight:300;margin-bottom:30px;line-height:1.08}
+  .tx-rail h2 em{font-style:italic;color:var(--gold-2)}
+  .tx-stage{display:flex;gap:14px;align-items:center;padding:10px 0;opacity:.32;transition:opacity .45s,transform .45s;transform:translateX(-4px)}
+  .tx-stage.active{opacity:1;transform:translateX(0)}
+  .tx-stage .dot{width:9px;height:9px;border-radius:50%;border:1px solid var(--gold);flex-shrink:0;transition:background .4s,box-shadow .4s}
+  .tx-stage.active .dot{background:var(--gold);box-shadow:0 0 0 5px rgba(193,146,74,.16)}
+  .tx-stage .lbl{font-size:14.5px;font-weight:600}
+  .tx-stage .lbl small{display:block;font-weight:300;font-size:12px;color:rgba(244,238,226,.55);text-transform:none}
+  .tx-progress{margin-top:28px;height:2px;background:var(--line-light);border-radius:2px;overflow:hidden}
+  .tx-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--olive-2),var(--gold))}
+  .tx-stack{position:relative;width:100%;aspect-ratio:16/10.2;border-radius:12px;overflow:hidden;box-shadow:var(--shadow);background:#0a1120}
+  .tx-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;will-change:opacity,transform}
+  .tx-grade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(to top,rgba(8,14,26,.6),transparent 42%),linear-gradient(to right,rgba(8,14,26,.28),transparent 30%)}
+  .tx-stamp{position:absolute;left:18px;bottom:16px;z-index:3;display:flex;align-items:center;gap:11px;color:var(--ivory)}
+  .tx-stamp .n{font-family:var(--display);font-size:30px;color:var(--gold-2);line-height:1;font-weight:300}
+  .tx-stamp .t{font-size:12px;letter-spacing:.2em;text-transform:uppercase}
+  .tx-hint{text-align:center;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:rgba(244,238,226,.4);margin-top:16px}
+
+  /* before/after sliders (real photos) */
+  .ba-wrap{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+  .ba{position:relative;border-radius:8px;overflow:hidden;box-shadow:var(--shadow-soft);user-select:none;touch-action:pan-y;aspect-ratio:3/2;background:#0a1120}
+  .ba-layer{position:absolute;inset:0}
+  .ba-layer img{width:100%;height:100%;object-fit:cover}
+  .ba-after{clip-path:inset(0 50% 0 0)}
+  .ba-handle{position:absolute;top:0;bottom:0;left:50%;width:2px;background:var(--ivory);z-index:4;transform:translateX(-1px)}
+  .ba-handle::before{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;background:var(--gold);box-shadow:0 6px 18px -4px rgba(0,0,0,.5)}
+  .ba-handle::after{content:"⟺";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:var(--navy);font-size:19px;font-weight:700}
+  .ba-tag{position:absolute;top:14px;z-index:5;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;padding:7px 13px;border-radius:30px;background:rgba(12,21,38,.62);backdrop-filter:blur(6px);color:var(--ivory);border:1px solid var(--line-light)}
+  .ba-tag.left{left:14px}.ba-tag.right{right:14px;color:var(--gold-2)}
+  .ba-title{font-family:var(--display);font-size:20px;margin-top:18px;text-align:center;font-weight:400}
+
+  /* guarantees */
+  .guarantee{background:var(--navy);color:var(--ivory)}
+  .g-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line-light)}
+  .g-cell{background:var(--navy);padding:42px 30px;transition:background .4s}
+  .g-cell:hover{background:var(--navy-2)}
+  .g-ico{font-family:var(--display);font-size:34px;color:var(--gold-2);line-height:1;margin-bottom:14px}
+  .g-cell h4{font-size:20px;font-weight:400;margin-bottom:8px}
+  .g-cell p{font-size:13.5px;font-weight:300;color:rgba(244,238,226,.7);line-height:1.65}
+
+  /* services */
+  .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  .svc{background:var(--cream);padding:46px 36px;position:relative;transition:background .45s,transform .45s}
+  .svc:hover{background:var(--navy);transform:translateY(-4px);z-index:2;box-shadow:var(--shadow-soft)}
+  .svc-ico{font-family:var(--display);font-size:36px;color:var(--olive);margin-bottom:6px;line-height:1;transition:color .45s}
+  .svc-num{font-family:var(--display);font-size:14px;color:var(--gold);letter-spacing:.1em}
+  .svc h3{font-size:26px;margin:16px 0 12px;transition:color .45s}
+  .svc p{font-size:14.5px;color:var(--ink-soft);font-weight:300;line-height:1.7;transition:color .45s}
+  .svc:hover h3,.svc:hover .svc-num{color:var(--ivory)}
+  .svc:hover .svc-ico{color:var(--gold-2)}
+  .svc:hover p{color:rgba(244,238,226,.72)}
+
+  /* portfolio */
+  .portfolio{background:var(--navy);color:var(--ivory)}
+  .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:44px;justify-content:center}
+  .filter-btn{background:transparent;border:1px solid var(--line-light);color:rgba(244,238,226,.75);padding:11px 22px;border-radius:40px;font-family:var(--body);font-size:13px;font-weight:600;letter-spacing:.04em;cursor:pointer;transition:all .3s;text-transform:uppercase;min-height:44px}
+  .filter-btn:hover{border-color:var(--gold)}
+  .filter-btn.active{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+  .port-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:22px}
+  .port-card{position:relative;overflow:hidden;border-radius:6px;min-height:300px;cursor:pointer;box-shadow:var(--shadow-soft);transition:transform .5s var(--ease);display:flex;align-items:flex-end}
+  .port-card.big{grid-column:span 8;min-height:460px}.port-card.med{grid-column:span 4;min-height:460px}
+  .port-card.third{grid-column:span 4}.port-card.half{grid-column:span 6}
+  .port-card:hover{transform:translateY(-6px)}
+  .port-bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .9s var(--ease)}
+  .port-card:hover .port-bg{transform:scale(1.07)}
+  .port-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(8,14,26,.92),rgba(8,14,26,.2) 55%,transparent)}
+  .port-info{position:relative;z-index:2;padding:30px;color:var(--ivory)}
+  .port-info .cat{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-2);font-weight:600}
+  .port-info h3{font-size:25px;margin-top:8px;font-weight:400}
+  .port-info .loc{font-size:13px;color:rgba(244,238,226,.65);margin-top:6px;font-weight:300}
+  .port-tag{position:absolute;top:22px;right:22px;z-index:2;background:rgba(244,238,226,.13);backdrop-filter:blur(6px);border:1px solid var(--line-light);color:var(--ivory);font-size:11px;letter-spacing:.1em;padding:6px 13px;border-radius:30px;text-transform:uppercase}
+
+  /* residential */
+  .resi{background:var(--olive);color:var(--ivory)}
+  .resi .sec-head h2 em{color:var(--gold-2)}.resi .sec-head p{color:rgba(244,238,226,.8)}
+  .resi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .resi-card{border:1px solid var(--line-light);padding:30px 26px;border-radius:6px;transition:all .45s var(--ease);background:rgba(244,238,226,.03)}
+  .resi-card:hover{background:var(--ivory);color:var(--navy);transform:translateY(-6px)}
+  .resi-card .rc-num{font-family:var(--display);font-size:13px;color:var(--gold-2);transition:color .4s}
+  .resi-card:hover .rc-num{color:var(--olive)}
+  .resi-card h4{font-size:22px;margin:14px 0 6px;font-weight:400}
+  .resi-card p{font-size:13px;font-weight:300;opacity:.8}
+
+  /* process */
+  .process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;counter-reset:step}
+  .step{position:relative;padding-top:40px}
+  .step::before{counter-increment:step;content:"0" counter(step);position:absolute;top:-18px;left:0;font-family:var(--display);font-size:70px;color:var(--gold);opacity:.32;line-height:1;font-weight:300}
+  .step h3{font-size:23px;margin-bottom:12px;font-weight:400}
+  .step p{font-size:14.5px;color:var(--ink-soft);font-weight:300;opacity:.88}
+  .step .line{position:absolute;top:14px;left:0;right:0;height:1px;background:var(--line)}
+
+  /* areas */
+  .areas{background:var(--cream)}
+  .area-chips{display:flex;flex-wrap:wrap;gap:12px;max-width:880px}
+  .chip{border:1px solid var(--line);background:var(--ivory);padding:11px 20px;border-radius:40px;font-size:14px;font-weight:500;transition:all .3s}
+  .chip:hover{background:var(--navy);color:var(--ivory);border-color:var(--navy)}
+
+  /* heritage */
+  .heritage{background:var(--ivory)}
+  .heritage-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:78px;align-items:center}
+  .heritage-visual{position:relative;border-radius:8px;min-height:520px;overflow:hidden;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;isolation:isolate}
+  .heritage-visual img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+  .heritage-visual::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(150deg,rgba(34,49,78,.82),rgba(12,21,38,.9))}
+  .heritage-visual .est-big{font-family:var(--display);font-size:126px;color:var(--gold-2);font-weight:300;line-height:1;text-align:center}
+  .heritage-visual .est-big small{display:block;font-family:var(--body);font-size:13px;letter-spacing:.4em;color:rgba(244,238,226,.7);margin-top:14px}
+  .heritage-badge{position:absolute;bottom:28px;left:28px;background:var(--ivory);color:var(--navy);padding:18px 24px;border-radius:6px;box-shadow:var(--shadow-soft)}
+  .heritage-badge span{font-family:var(--display);font-size:30px;display:block;color:var(--olive)}
+  .heritage-badge small{font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+  .heritage-text h2{font-size:clamp(32px,4.5vw,54px);font-weight:300;margin:22px 0 24px}
+  .heritage-text h2 em{font-style:italic;color:var(--gold)}
+  .heritage-text p{color:var(--ink-soft);font-weight:300;margin-bottom:18px;font-size:16px;line-height:1.8}
+  .heritage-list{list-style:none;margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .heritage-list li{display:flex;gap:12px;align-items:flex-start;font-size:14.5px;font-weight:500}
+  .heritage-list li::before{content:"✦";color:var(--gold);font-size:12px;margin-top:4px}
+
+  /* testimonials */
+  .testi{background:var(--navy);color:var(--ivory)}
+  .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .testi-card{border:1px solid var(--line-light);border-radius:8px;padding:36px 32px;background:rgba(244,238,226,.02)}
+  .testi-card .stars{color:var(--gold-2);font-size:15px;letter-spacing:3px;margin-bottom:18px}
+  .testi-card blockquote{font-family:var(--display);font-size:19px;font-style:italic;font-weight:300;line-height:1.5;color:var(--ivory)}
+  .testi-card .by{margin-top:22px;font-size:13px;color:rgba(244,238,226,.62);letter-spacing:.04em}
+  .testi-card .by b{color:var(--gold-2);font-weight:600;font-style:normal;display:block;font-family:var(--body)}
+
+  /* faq */
+  .faq{background:var(--ivory)}
+  .faq-list{max-width:820px;margin:0 auto}
+  .faq-item{border-bottom:1px solid var(--line)}
+  .faq-q{width:100%;text-align:left;background:none;border:none;cursor:pointer;padding:26px 0;display:flex;justify-content:space-between;align-items:center;gap:24px;font-family:var(--display);font-size:21px;color:var(--navy);font-weight:400}
+  .faq-q .pm{flex-shrink:0;width:30px;height:30px;border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--gold);transition:transform .4s,background .4s,color .4s;font-family:var(--body)}
+  .faq-item.open .faq-q .pm{transform:rotate(45deg);background:var(--gold);color:var(--navy);border-color:var(--gold)}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .45s var(--ease)}
+  .faq-a p{padding:0 0 26px;color:var(--ink-soft);font-weight:300;font-size:15.5px;line-height:1.8;max-width:90%}
+
+  /* cta band */
+  .cta-band{background:linear-gradient(135deg,#1a2740,#0c1526);color:var(--ivory);text-align:center;position:relative;overflow:hidden}
+  .cta-band .glow{position:absolute;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(193,146,74,.2),transparent 70%);top:-160px;left:50%;transform:translateX(-50%)}
+  .cta-band h2{font-size:clamp(32px,4.6vw,56px);font-weight:300;position:relative}
+  .cta-band h2 em{font-style:italic;color:var(--gold-2)}
+  .cta-band p{margin:20px auto 34px;max-width:54ch;color:rgba(244,238,226,.74);font-weight:300;font-size:17px;position:relative}
+  .cta-band .hero-cta{justify-content:center;position:relative}
+
+  /* quote form */
+  .quote-sec{background:var(--cream)}
+  .quote-grid{display:grid;grid-template-columns:.85fr 1.15fr;border-radius:8px;overflow:hidden;box-shadow:var(--shadow)}
+  .quote-info{background:var(--navy);color:var(--ivory);padding:62px 52px;position:relative;overflow:hidden}
+  .quote-info .qi-glow{position:absolute;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(193,146,74,.2),transparent 70%);bottom:-120px;left:-80px}
+  .quote-info h2{font-size:40px;font-weight:300;margin:22px 0 18px;position:relative}
+  .quote-info h2 em{font-style:italic;color:var(--gold-2)}
+  .quote-info p{color:rgba(244,238,226,.74);font-weight:300;font-size:15px;line-height:1.8;position:relative}
+  .qi-contact{margin-top:40px;display:flex;flex-direction:column;gap:18px;position:relative}
+  .qi-contact a,.qi-contact div{display:flex;gap:16px;align-items:center;font-size:15px;color:rgba(244,238,226,.9);transition:color .3s}
+  .qi-contact a:hover{color:var(--gold-2)}
+  .qi-contact .ic{width:42px;height:42px;border:1px solid var(--line-light);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--gold-2);font-size:16px}
+  .qi-contact small{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(244,238,226,.5);margin-bottom:2px}
+  .quote-form{background:var(--ivory);padding:58px 52px}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .field{margin-bottom:22px}
+  .field label{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--ink-soft);margin-bottom:8px}
+  .field label .req{color:var(--gold)}
+  .field input,.field select,.field textarea{width:100%;padding:14px 16px;border:1px solid var(--line);background:var(--cream);font-family:var(--body);font-size:15px;color:var(--navy);border-radius:3px;transition:border .3s,box-shadow .3s}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(193,146,74,.18)}
+  .field textarea{resize:vertical;min-height:92px}
+  .field.error input,.field.error select,.field.error textarea{border-color:#c06a55;box-shadow:0 0 0 3px rgba(192,106,85,.18)}
+  .err-msg{display:none;color:#b05c52;font-size:12.5px;margin-top:6px;font-weight:500}
+  .field.error .err-msg{display:block}
+  .quote-form .btn{width:100%;justify-content:center;margin-top:6px;padding:17px}
+  .form-success{display:none;text-align:center;padding:28px 0}
+  .form-success.show{display:block;animation:fadeUp .6s ease}
+  .form-success .check{width:62px;height:62px;border-radius:50%;background:var(--olive);color:var(--ivory);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 18px}
+  .form-success h3{font-size:27px;font-weight:400;margin-bottom:10px}
+  .form-success p{color:var(--ink-soft);font-weight:300}
+  .form-note{font-size:12px;color:var(--ink-soft);opacity:.7;margin-top:13px;text-align:center;font-weight:300}
+
+  /* footer */
+  footer{background:var(--navy-2);color:var(--ivory);padding:78px 0 28px}
+  .foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1.2fr;gap:48px;padding-bottom:52px;border-bottom:1px solid var(--line-light)}
+  .foot-brand .mark{font-family:var(--display);font-size:28px;font-weight:500}
+  .foot-brand .mark b{color:var(--gold)}
+  .foot-brand p{color:rgba(244,238,226,.6);font-weight:300;margin-top:18px;max-width:32ch;font-size:14.5px;line-height:1.8}
+  .foot-col h4{font-family:var(--body);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-2);margin-bottom:22px;font-weight:600}
+  .foot-col ul{list-style:none;display:flex;flex-direction:column;gap:13px}
+  .foot-col a,.foot-col li{color:rgba(244,238,226,.72);font-size:14.5px;font-weight:300;transition:color .3s}
+  .foot-col a:hover{color:var(--gold-2)}
+  .foot-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:26px;flex-wrap:wrap;gap:14px}
+  .foot-bottom p{font-size:13px;color:rgba(244,238,226,.5);font-weight:300}
+  .foot-social{display:flex;gap:14px}
+  .foot-social a{width:38px;height:38px;border:1px solid var(--line-light);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .3s;color:rgba(244,238,226,.8)}
+  .foot-social a:hover{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+
+  /* floating + sticky cta */
+  .wa-float{position:fixed;bottom:26px;right:26px;z-index:900;width:58px;height:58px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 30px -8px rgba(37,211,102,.6);transition:transform .3s}
+  .wa-float:hover{transform:scale(1.08)}.wa-float svg{width:30px;height:30px;fill:#fff}
+  .mobile-cta{display:none;position:fixed;bottom:0;left:0;right:0;z-index:950;background:var(--navy);border-top:1px solid var(--line-light);padding:10px;gap:10px}
+  .mobile-cta a{flex:1;text-align:center;padding:13px 0;border-radius:4px;font-size:12.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;min-height:44px;display:flex;align-items:center;justify-content:center}
+  .mobile-cta .m-call{background:rgba(244,238,226,.1);color:var(--ivory)}
+  .mobile-cta .m-wa{background:#25d366;color:#fff}
+  .mobile-cta .m-quote{background:var(--gold);color:var(--navy)}
+
+  .reveal{opacity:0;transform:translateY(36px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+  @media(max-width:1024px){
+    .heritage-grid,.quote-grid{grid-template-columns:1fr;gap:46px}
+    .foot-grid,.process-grid,.resi-grid,.heritage-list,.g-grid,.testi-grid,.ba-wrap{grid-template-columns:1fr 1fr}
+    .tx-inner{grid-template-columns:1fr;gap:28px}
+    .tx-rail{display:flex;flex-wrap:wrap;gap:8px 24px;align-items:center}
+    .tx-rail h2,.tx-rail .eyebrow,.tx-progress{flex-basis:100%}
+    .tx-stage{padding:4px 0}.tx-stage .lbl small{display:none}
+  }
+  @media(max-width:760px){
+    .wrap{padding:0 20px}.pad{padding:74px 0}
+    .nav-links,.nav .btn{display:none}.burger{display:flex}
+    .services-grid,.g-grid,.testi-grid,.ba-wrap{grid-template-columns:1fr}
+    .port-grid{grid-template-columns:1fr;gap:18px}
+    .port-card.big,.port-card.med,.port-card.third,.port-card.half{grid-column:span 1;min-height:300px}
+    .resi-grid{grid-template-columns:1fr 1fr}
+    .process-grid,.foot-grid,.form-row,.heritage-list{grid-template-columns:1fr}
+    .form-row{gap:0}.quote-info,.quote-form{padding:42px 26px}
+    .hero-meta{gap:30px}.step .line{display:none}
+    .transform-track{height:430vh}.tx-inner{padding:0 20px}
+    .tx-stack{aspect-ratio:4/3}
+    .wa-float{display:none}.mobile-cta{display:flex}
+    body{padding-bottom:64px}
+  }
+  @media(max-width:430px){.resi-grid{grid-template-columns:1fr}.hero h1{font-size:clamp(38px,11vw,54px)}}
+  @media(prefers-reduced-motion:reduce){
+    *{animation-duration:.001ms!important;transition-duration:.001ms!important}
+    html{scroll-behavior:auto}
+    .reveal{opacity:1;transform:none}
+    .reveal-card{transform:none!important}
+    /* show the finished room when motion is reduced */
+    .tx-img[data-stage="4"]{opacity:1!important}
+  }
+</style>
+</head>
+<body>
+
+<header id="header">
+  <div class="wrap nav">
+    <a href="#home" class="brand"><span class="mark">JAAN <b>M.</b> STUDIOS</span><span class="sub">Paint &amp; Interiors · Est. 1984</span></a>
+    <nav aria-label="Primary"><ul class="nav-links">
+      <li><a href="#transform">Process</a></li>
+      <li><a href="#beforeafter">Before / After</a></li>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#heritage">Heritage</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul></nav>
+    <a href="#contact" class="btn btn-primary">Get a Free Quote</a>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="drawer" id="drawer" aria-hidden="true">
+  <button class="close" id="closeDrawer" aria-label="Close menu">&times;</button>
+  <a href="#transform" class="dl">Process</a>
+  <a href="#beforeafter" class="dl">Before / After</a>
+  <a href="#work" class="dl">Work</a>
+  <a href="#heritage" class="dl">Heritage</a>
+  <a href="#faq" class="dl">FAQ</a>
+  <a href="#contact" class="btn btn-primary dl">Get a Free Quote</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-glow"></div>
+  <div class="hero-glow two"></div>
+  <div class="wrap">
+    <div class="hero-est anim d1"><span class="eyebrow center">Painting &amp; Interior Design · Lahore · Since 1984</span></div>
+    <h1 class="anim d2">Your dream. <em>Your home.</em><span class="nl">Realised.</span></h1>
+    <p class="hero-sub anim d3">From a bare structure to a finished, fully furnished modern home — Jaan M. Studios has shaped Pakistan's most distinguished residences and landmarks for four decades.</p>
+    <div class="hero-cta anim d4">
+      <a href="#contact" class="btn btn-primary">Get a Free Quote</a>
+      <a href="#beforeafter" class="btn btn-ghost">See Before &amp; After</a>
+    </div>
+    <div class="hero-meta anim d5">
+      <div><span data-count="40">0</span><small>Years of Mastery</small></div>
+      <div><span data-count="1000">0</span><small>Homes Delivered</small></div>
+      <div><span data-count="25">0</span><small>Landmark Projects</small></div>
+    </div>
+  </div>
+  <div class="scroll-cue">Scroll</div>
+</section>
+
+<!-- APPLE-STYLE TILT REVEAL -->
+<section class="reveal-scene" id="reveal">
+  <div class="reveal-persp">
+    <div class="reveal-title" id="revealTitle">
+      <span class="eyebrow center">A Jaan M. Finish</span>
+      <h2>Spaces people <em>never want to leave.</em></h2>
+    </div>
+    <div class="reveal-card" id="revealCard">
+      <!-- IMG: hero reveal card -->
+      <img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=85&w=1920&auto=format&fit=crop" alt="A finished luxury open-plan living room with warm wood, soft grey sofas and natural light" width="1920" height="1080">
+      <div class="rc-badge">Painting &amp; Interiors · <b>Raw to ready</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- CLIENTS -->
+<section class="clients">
+  <p class="clients-label">Trusted on Pakistan's most prestigious projects</p>
+  <div class="marquee"><div class="marquee-track">
+    <span class="client-logo">Mall of Lahore</span><span class="client-logo">Nawaz Sharif Residence</span><span class="client-logo">The Residence Hotel</span><span class="client-logo">Lahore Hotel</span><span class="client-logo">Saddique Trade Center</span><span class="client-logo">Defence Raya Golf Club</span><span class="client-logo">Beaconhouse School</span><span class="client-logo">Almas</span>
+    <span class="client-logo">Mall of Lahore</span><span class="client-logo">Nawaz Sharif Residence</span><span class="client-logo">The Residence Hotel</span><span class="client-logo">Lahore Hotel</span><span class="client-logo">Saddique Trade Center</span><span class="client-logo">Defence Raya Golf Club</span><span class="client-logo">Beaconhouse School</span><span class="client-logo">Almas</span>
+  </div></div>
+</section>
+
+<!-- ===== TRANSFORMATION — real-photo scroll scrub ===== -->
+<section class="transform" id="transform">
+  <div class="transform-track" id="txTrack">
+    <div class="transform-sticky">
+      <div class="tx-bg"></div>
+      <div class="tx-inner">
+        <div class="tx-rail">
+          <span class="eyebrow">The Transformation</span>
+          <h2>Scroll a bare shell into a <em>finished home.</em></h2>
+          <div class="tx-stage" data-stage="0"><span class="dot"></span><span class="lbl">Bare Shell<small>The raw, unfinished space</small></span></div>
+          <div class="tx-stage" data-stage="1"><span class="dot"></span><span class="lbl">Colour &amp; Paint<small>Real paint on the walls</small></span></div>
+          <div class="tx-stage" data-stage="2"><span class="dot"></span><span class="lbl">Surfaces<small>Flooring &amp; glazing</small></span></div>
+          <div class="tx-stage" data-stage="3"><span class="dot"></span><span class="lbl">Furnishing<small>Pieces placed with intent</small></span></div>
+          <div class="tx-stage" data-stage="4"><span class="dot"></span><span class="lbl">Styled &amp; Lit<small>Warm, finished, yours</small></span></div>
+          <div class="tx-progress"><i id="txBar"></i></div>
+        </div>
+        <div>
+          <!-- IMG: transformation frames (5). Same room/angle = perfect morph. URLs also set in JS below. -->
+          <div class="tx-stack" id="txStack" role="img" aria-label="A space transforming from a bare shell, through painting and surfaces, to a fully furnished and styled home">
+            <img class="tx-img" data-stage="0" alt="" aria-hidden="true" src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1600&auto=format&fit=crop">
+            <img class="tx-img" data-stage="1" alt="" aria-hidden="true" src="https://images.unsplash.com/photo-1574359411659-15573a27fd0c?q=80&w=1600&auto=format&fit=crop">
+            <img class="tx-img" data-stage="2" alt="" aria-hidden="true" src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1600&auto=format&fit=crop">
+            <img class="tx-img" data-stage="3" alt="" aria-hidden="true" src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1600&auto=format&fit=crop">
+            <img class="tx-img" data-stage="4" alt="" aria-hidden="true" src="https://images.unsplash.com/photo-1567767292278-a4f21aa2d36e?q=80&w=1600&auto=format&fit=crop">
+            <div class="tx-grade"></div>
+            <div class="tx-stamp"><span class="n" id="txNum">01</span><span class="t" id="txLabel">Bare Shell</span></div>
+          </div>
+          <p class="tx-hint">Keep scrolling to watch it come together</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BEFORE / AFTER -->
+<section class="pad" id="beforeafter">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow center">Before &amp; After</span>
+      <h2>Drag to reveal the <em>difference</em> we make.</h2>
+      <p>Real spaces, the way our clients experience them. Slide each image to move from raw to finished.</p>
+    </div>
+    <div class="ba-wrap reveal">
+      <div>
+        <div class="ba" data-ba>
+          <span class="ba-tag left">Before</span><span class="ba-tag right">After</span>
+          <!-- IMG: before/after #1 -->
+          <div class="ba-layer ba-before"><img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1400&auto=format&fit=crop" alt="An empty, unfinished interior before design work" loading="lazy"></div>
+          <div class="ba-layer ba-after" data-after><img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?q=80&w=1400&auto=format&fit=crop" alt="The same style of room finished and furnished in soft, warm tones" loading="lazy"></div>
+          <div class="ba-handle" data-handle></div>
+        </div>
+        <p class="ba-title">Living Space · DHA Lahore</p>
+      </div>
+      <div>
+        <div class="ba" data-ba>
+          <span class="ba-tag left">Before</span><span class="ba-tag right">After</span>
+          <!-- IMG: before/after #2 -->
+          <div class="ba-layer ba-before"><img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1400&auto=format&fit=crop" alt="A bare, unfinished room before painting and furnishing" loading="lazy"></div>
+          <div class="ba-layer ba-after" data-after><img src="https://images.unsplash.com/photo-1567767292278-a4f21aa2d36e?q=80&w=1400&auto=format&fit=crop" alt="A warm, fully furnished lounge with natural light after completion" loading="lazy"></div>
+          <div class="ba-handle" data-handle></div>
+        </div>
+        <p class="ba-title">Lounge · 1 Kanal Residence</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GUARANTEES -->
+<section class="guarantee">
+  <div class="wrap" style="padding:0">
+    <div class="g-grid">
+      <div class="g-cell"><div class="g-ico">◷</div><h4>Free Site Visit</h4><p>We visit, measure, and prepare a detailed quote at no cost and no obligation.</p></div>
+      <div class="g-cell"><div class="g-ico">₨</div><h4>Transparent Pricing</h4><p>Clear, milestone based quotes. No hidden charges, no surprises at the end.</p></div>
+      <div class="g-cell"><div class="g-ico">◴</div><h4>On-Time Delivery</h4><p>A committed timeline and a clean handover, respected on every project.</p></div>
+      <div class="g-cell"><div class="g-ico">✦</div><h4>Premium &amp; Warranted</h4><p>Top grade materials and workmanship, backed by our finishing warranty.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="pad" id="services">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">What We Do</span><h2>A complete craft, from <em>bare wall</em> to finished space.</h2><p>Colour, texture, and design intelligence for projects of every scale across Pakistan.</p></div>
+    <div class="services-grid reveal">
+      <div class="svc"><div class="svc-ico">◇</div><div class="svc-num">01</div><h3>Premium Painting</h3><p>Flawless interior and exterior finishes, texture coats, enamels, and protective systems by master craftsmen.</p></div>
+      <div class="svc"><div class="svc-ico">◆</div><div class="svc-num">02</div><h3>Interior Design</h3><p>Full service design from concept to handover. Space planning, palettes, materials, lighting, and detailing.</p></div>
+      <div class="svc"><div class="svc-ico">▣</div><div class="svc-num">03</div><h3>Commercial Spaces</h3><p>Malls, hotels, trade centers, offices, and restaurants delivered on programme and at scale.</p></div>
+      <div class="svc"><div class="svc-ico">⬟</div><div class="svc-num">04</div><h3>Residential Projects</h3><p>From a 5 Marla home to a sprawling farmhouse, every residence treated as a signature project.</p></div>
+      <div class="svc"><div class="svc-ico">◈</div><div class="svc-num">05</div><h3>Restoration</h3><p>Reviving heritage interiors and tired spaces with respect for the original character.</p></div>
+      <div class="svc"><div class="svc-ico">✶</div><div class="svc-num">06</div><h3>Design Consultancy</h3><p>Colour strategy, material selection, and on-site direction for clients and developers.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section class="pad portfolio on-dark" id="work">
+  <div class="wrap">
+    <div class="sec-head center reveal"><span class="eyebrow center">Selected Work</span><h2>A portfolio built across <em>four decades.</em></h2><p>Landmarks, luxury residences, hospitality, and commercial spaces.</p></div>
+    <div class="filters reveal">
+      <button class="filter-btn active" data-filter="all">All Projects</button>
+      <button class="filter-btn" data-filter="landmark">Landmarks</button>
+      <button class="filter-btn" data-filter="hospitality">Hospitality</button>
+      <button class="filter-btn" data-filter="commercial">Commercial</button>
+      <button class="filter-btn" data-filter="residential">Residential</button>
+    </div>
+    <!-- IMG: portfolio cards — replace each data-img URL with your project photo -->
+    <div class="port-grid reveal">
+      <article class="port-card big" data-cat="commercial"><div class="port-bg" data-img="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1400&auto=format&fit=crop"></div><span class="port-tag">Flagship</span><div class="port-info"><span class="cat">Commercial · Retail</span><h3>Mall of Lahore</h3><p class="loc">Lahore, Pakistan</p></div></article>
+      <article class="port-card med" data-cat="residential"><div class="port-bg" data-img="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1000&auto=format&fit=crop"></div><span class="port-tag">Private</span><div class="port-info"><span class="cat">Residential · Estate</span><h3>Nawaz Sharif Residence</h3><p class="loc">Lahore, Pakistan</p></div></article>
+      <article class="port-card third" data-cat="hospitality"><div class="port-bg" data-img="https://images.unsplash.com/photo-1567767292278-a4f21aa2d36e?q=80&w=1000&auto=format&fit=crop"></div><div class="port-info"><span class="cat">Hospitality</span><h3>The Residence Hotel</h3><p class="loc">Lahore, Pakistan</p></div></article>
+      <article class="port-card third" data-cat="hospitality"><div class="port-bg" data-img="https://images.unsplash.com/photo-1604709177225-055f99402ea3?q=80&w=1000&auto=format&fit=crop"></div><div class="port-info"><span class="cat">Hospitality</span><h3>Lahore Hotel</h3><p class="loc">Lahore, Pakistan</p></div></article>
+      <article class="port-card third" data-cat="commercial"><div class="port-bg" data-img="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1000&auto=format&fit=crop"></div><div class="port-info"><span class="cat">Commercial</span><h3>Saddique Trade Center</h3><p class="loc">Lahore, Pakistan</p></div></article>
+      <article class="port-card half" data-cat="landmark"><div class="port-bg" data-img="https://images.unsplash.com/photo-1513584684374-8bab748fbf90?q=80&w=1200&auto=format&fit=crop"></div><span class="port-tag">Landmark</span><div class="port-info"><span class="cat">Residential · Golf &amp; Leisure</span><h3>Defence Raya Residence &amp; Golf Club</h3><p class="loc">DHA, Lahore</p></div></article>
+      <article class="port-card half" data-cat="commercial"><div class="port-bg" data-img="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1200&auto=format&fit=crop"></div><div class="port-info"><span class="cat">Institutional</span><h3>Beaconhouse School</h3><p class="loc">Multiple Campuses</p></div></article>
+      <article class="port-card third" data-cat="commercial"><div class="port-bg" data-img="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=1000&auto=format&fit=crop"></div><div class="port-info"><span class="cat">Commercial · Retail</span><h3>Almas</h3><p class="loc">Lahore, Pakistan</p></div></article>
+      <article class="port-card third" data-cat="residential"><div class="port-bg" data-img="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?q=80&w=1000&auto=format&fit=crop"></div><div class="port-info"><span class="cat">Residential · Farmhouse</span><h3>Private Farmhouse Estate</h3><p class="loc">Bedian Road, Lahore</p></div></article>
+      <article class="port-card third" data-cat="hospitality"><div class="port-bg" data-img="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=1000&auto=format&fit=crop"></div><div class="port-info"><span class="cat">Hospitality · Dining</span><h3>Signature Restaurant Fit-Out</h3><p class="loc">Lahore, Pakistan</p></div></article>
+    </div>
+  </div>
+</section>
+
+<!-- RESIDENTIAL -->
+<section class="pad resi">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">Homes of Every Scale</span><h2>From a <em>5 Marla</em> home to a <em>10 Kanal</em> estate.</h2><p>Over 1,000 residences finished with the same care, whatever the size.</p></div>
+    <div class="resi-grid reveal">
+      <div class="resi-card"><div class="rc-num">/ 01</div><h4>5 &amp; 10 Marla</h4><p>Smart, elegant homes finished to a premium standard.</p></div>
+      <div class="resi-card"><div class="rc-num">/ 02</div><h4>1 &amp; 2 Kanal</h4><p>Spacious family residences with bespoke interior design.</p></div>
+      <div class="resi-card"><div class="rc-num">/ 03</div><h4>5 &amp; 10 Kanal</h4><p>Luxury estates with full scope design and finishing.</p></div>
+      <div class="resi-card"><div class="rc-num">/ 04</div><h4>Farm Houses</h4><p>Statement getaways crafted for comfort and grandeur.</p></div>
+      <div class="resi-card"><div class="rc-num">/ 05</div><h4>Commercial Offices</h4><p>Workspaces that reflect your brand and ambition.</p></div>
+      <div class="resi-card"><div class="rc-num">/ 06</div><h4>Restaurants</h4><p>Atmospheric dining interiors guests remember.</p></div>
+      <div class="resi-card"><div class="rc-num">/ 07</div><h4>Hotels</h4><p>Lobby to suite finishes built for first impressions.</p></div>
+      <div class="resi-card"><div class="rc-num">/ 08</div><h4>Retail &amp; Malls</h4><p>High traffic spaces finished to last and impress.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="pad">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">How We Work</span><h2>A process refined over <em>40 years.</em></h2></div>
+    <div class="process-grid reveal">
+      <div class="step"><div class="line"></div><h3>Consult</h3><p>We listen to your vision, walk the space, and understand budget and timeline before anything begins.</p></div>
+      <div class="step"><div class="line"></div><h3>Design</h3><p>Palettes, materials, and detailed plans prepared so you see exactly what your space will become.</p></div>
+      <div class="step"><div class="line"></div><h3>Execute</h3><p>Master craftsmen deliver with precision, cleanliness, and respect for your home throughout.</p></div>
+      <div class="step"><div class="line"></div><h3>Reveal</h3><p>A final walkthrough, a flawless finish, and a space that feels unmistakably yours. On time.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICE AREAS -->
+<section class="pad areas">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">Where We Work</span><h2>Proudly finishing homes across <em>Lahore</em> and beyond.</h2></div>
+    <div class="area-chips reveal">
+      <span class="chip">DHA Lahore</span><span class="chip">Bahria Town</span><span class="chip">Gulberg</span><span class="chip">Lahore Cantt</span><span class="chip">Model Town</span><span class="chip">Johar Town</span><span class="chip">Askari</span><span class="chip">EME Society</span><span class="chip">Wapda Town</span><span class="chip">Valencia</span><span class="chip">Defence Raya</span><span class="chip">Across Pakistan</span>
+    </div>
+  </div>
+</section>
+
+<!-- HERITAGE -->
+<section class="pad heritage" id="heritage">
+  <div class="wrap">
+    <div class="heritage-grid">
+      <div class="heritage-visual reveal">
+        <!-- IMG: heritage backdrop -->
+        <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1200&auto=format&fit=crop" alt="" aria-hidden="true" loading="lazy">
+        <div class="est-big">1984<small>EST. LAHORE</small></div>
+        <div class="heritage-badge"><span>40+</span><small>Years of Trust</small></div>
+      </div>
+      <div class="heritage-text reveal">
+        <span class="eyebrow">Our Heritage</span>
+        <h2>Three generations of <em>colour and craft.</em></h2>
+        <p>Since 1984, Jaan M. Studios has grown from a small Lahore painting house into one of Pakistan's most trusted names in painting and interior design. Our reputation was not bought. It was earned, one perfectly finished wall at a time.</p>
+        <p>That trust is why families, hoteliers, developers, and institutions return to us, and why our work stands on some of the country's most recognised addresses.</p>
+        <ul class="heritage-list">
+          <li>Master craftsmen, in-house teams</li><li>Premium materials only</li>
+          <li>On time, on budget delivery</li><li>Residential to national landmarks</li>
+          <li>Transparent, milestone pricing</li><li>Workmanship you can trust</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="pad testi on-dark">
+  <div class="wrap">
+    <div class="sec-head center reveal"><span class="eyebrow center">Client Voices</span><h2>The reason clients <em>return.</em></h2></div>
+    <div class="testi-grid reveal">
+      <div class="testi-card"><div class="stars" aria-label="5 out of 5 stars">★★★★★</div><blockquote>They did not just paint our home. They understood it. Every finish was exactly as promised.</blockquote><p class="by"><b>A. Khan</b>Private Residence · 2 Kanal, DHA Lahore</p></div>
+      <div class="testi-card"><div class="stars" aria-label="5 out of 5 stars">★★★★★</div><blockquote>On time, immaculate, and a team you can trust inside your home. Rare to find at this standard.</blockquote><p class="by"><b>S. Malik</b>Farmhouse · Bedian Road</p></div>
+      <div class="testi-card"><div class="stars" aria-label="5 out of 5 stars">★★★★★</div><blockquote>From quote to handover, the most professional finishing experience we have had on a commercial project.</blockquote><p class="by"><b>Project Director</b>Commercial Fit-Out · Lahore</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="pad faq" id="faq">
+  <div class="wrap">
+    <div class="sec-head center reveal"><span class="eyebrow center">Good to Know</span><h2>Questions, <em>answered.</em></h2></div>
+    <div class="faq-list reveal">
+      <div class="faq-item"><button class="faq-q" aria-expanded="false">Is the site visit and quote really free?<span class="pm">+</span></button><div class="faq-a"><p>Yes. We visit your property, take measurements, understand your needs, and prepare a detailed written quote at no cost and with no obligation to proceed.</p></div></div>
+      <div class="faq-item"><button class="faq-q" aria-expanded="false">Do you handle both painting and full interior design?<span class="pm">+</span></button><div class="faq-a"><p>We do. You can engage us for painting alone, interior design alone, or a complete package from bare structure to a fully furnished, styled space.</p></div></div>
+      <div class="faq-item"><button class="faq-q" aria-expanded="false">How long does a typical project take?<span class="pm">+</span></button><div class="faq-a"><p>It depends on scope and size. A single home repaint can take days, while a full interior of a 1 Kanal house runs several weeks. We commit to a clear timeline in your quote and respect it.</p></div></div>
+      <div class="faq-item"><button class="faq-q" aria-expanded="false">What sizes and project types do you take on?<span class="pm">+</span></button><div class="faq-a"><p>Everything from a 5 Marla home to 10 Kanal estates and farmhouses, plus offices, restaurants, hotels, schools, malls, and landmark commercial projects.</p></div></div>
+      <div class="faq-item"><button class="faq-q" aria-expanded="false">Which materials and brands do you use?<span class="pm">+</span></button><div class="faq-a"><p>We use premium, project appropriate materials and finishes, and back our work with a finishing warranty. We are happy to discuss specific brands and grades during your consultation.</p></div></div>
+      <div class="faq-item"><button class="faq-q" aria-expanded="false">How do I get started?<span class="pm">+</span></button><div class="faq-a"><p>Send us your details through the quote form below, call, or message us on WhatsApp. We will arrange a free site visit at a time that suits you.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONSULTATION BANNER -->
+<section class="pad cta-band">
+  <div class="glow"></div>
+  <div class="wrap reveal">
+    <h2>Ready to see your space <em>transformed?</em></h2>
+    <p>Book a free, no obligation consultation. Tell us your vision and we will show you what is possible, with a clear quote to match.</p>
+    <div class="hero-cta"><a href="#contact" class="btn btn-primary">Book a Free Consultation</a><a href="https://wa.me/923000000000" target="_blank" rel="noopener" class="btn btn-ghost">Message on WhatsApp</a></div>
+  </div>
+</section>
+
+<!-- QUOTE FORM -->
+<section class="pad quote-sec" id="contact">
+  <div class="wrap">
+    <div class="quote-grid reveal">
+      <div class="quote-info">
+        <div class="qi-glow"></div>
+        <span class="eyebrow">Get a Quote</span>
+        <h2>Let's bring your <em>vision</em> to life.</h2>
+        <p>Tell us about your project and our team will prepare a tailored, no obligation estimate. Whether it is a single room or a full landmark, we would be glad to help.</p>
+        <div class="qi-contact">
+          <a href="tel:+923000000000"><span class="ic">✆</span><span><small>Call us</small>+92 300 000 0000</span></a>
+          <a href="mailto:hello@jaanmstudios.com"><span class="ic">✉</span><span><small>Email</small>hello@jaanmstudios.com</span></a>
+          <div><span class="ic">⌖</span><span><small>Studio</small>Gulberg, Lahore, Pakistan</span></div>
+        </div>
+      </div>
+      <div class="quote-form">
+        <form id="quoteForm" novalidate>
+          <div class="form-row">
+            <div class="field"><label for="f-name">Full Name <span class="req">*</span></label><input id="f-name" type="text" name="name" placeholder="Your name" autocomplete="name"><span class="err-msg">Please enter your name.</span></div>
+            <div class="field"><label for="f-phone">Phone / WhatsApp <span class="req">*</span></label><input id="f-phone" type="tel" name="phone" placeholder="03XX XXXXXXX" autocomplete="tel"><span class="err-msg">Please enter a valid phone number.</span></div>
+          </div>
+          <div class="field"><label for="f-email">Email Address</label><input id="f-email" type="email" name="email" placeholder="you@email.com" autocomplete="email"><span class="err-msg">Please enter a valid email.</span></div>
+          <div class="form-row">
+            <div class="field"><label for="f-ptype">Project Type <span class="req">*</span></label><select id="f-ptype" name="ptype"><option value="">Select type</option><option>Residential</option><option>Commercial Office</option><option>Hospitality / Hotel</option><option>Restaurant</option><option>Retail / Mall</option><option>Institutional</option></select><span class="err-msg">Please select a project type.</span></div>
+            <div class="field"><label for="f-size">Property Size</label><select id="f-size" name="size"><option value="">Select size</option><option>5 Marla</option><option>10 Marla</option><option>1 Kanal</option><option>2 Kanal</option><option>5 Kanal</option><option>10 Kanal</option><option>Farm House</option><option>Commercial / Other</option></select></div>
+          </div>
+          <div class="form-row">
+            <div class="field"><label for="f-service">Service Needed <span class="req">*</span></label><select id="f-service" name="service"><option value="">Select service</option><option>Painting Only</option><option>Interior Design Only</option><option>Painting + Interior Design</option><option>Restoration / Renovation</option><option>Consultancy</option></select><span class="err-msg">Please select a service.</span></div>
+            <div class="field"><label for="f-loc">City / Location</label><input id="f-loc" type="text" name="location" placeholder="e.g. DHA, Lahore"></div>
+          </div>
+          <div class="field"><label for="f-msg">Project Details</label><textarea id="f-msg" name="message" placeholder="Tell us about your space, timeline, or anything else..."></textarea></div>
+          <button type="submit" class="btn btn-primary">Request My Free Quote</button>
+          <p class="form-note">No obligation. We typically respond within one business day.</p>
+        </form>
+        <div class="form-success" id="formSuccess"><div class="check">✓</div><h3>Thank you.</h3><p>Your request has reached Jaan M. Studios. Our team will be in touch within one business day to discuss your project.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand"><div class="mark">JAAN <b>M.</b> STUDIOS</div><p>Painting and interior design of the highest standard, crafted across Pakistan since 1984. Your dream. Your home. Realised.</p></div>
+      <div class="foot-col"><h4>Explore</h4><ul><li><a href="#transform">Process</a></li><li><a href="#beforeafter">Before / After</a></li><li><a href="#work">Portfolio</a></li><li><a href="#contact">Get a Quote</a></li></ul></div>
+      <div class="foot-col"><h4>Services</h4><ul><li>Premium Painting</li><li>Interior Design</li><li>Commercial Spaces</li><li>Restoration</li></ul></div>
+      <div class="foot-col"><h4>Contact</h4><ul><li><a href="tel:+923000000000">+92 300 000 0000</a></li><li><a href="mailto:hello@jaanmstudios.com">hello@jaanmstudios.com</a></li><li>Gulberg, Lahore, Pakistan</li></ul></div>
+    </div>
+    <div class="foot-bottom"><p>© <span id="year"></span> Jaan M. Studios. All rights reserved.</p><div class="foot-social"><a href="#" aria-label="Instagram">IG</a><a href="#" aria-label="Facebook">FB</a><a href="#" aria-label="LinkedIn">IN</a></div></div>
+  </div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/923000000000" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.2-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3zM12 2a10 10 0 0 0-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1 0 12 2z"/></svg></a>
+
+<div class="mobile-cta">
+  <a class="m-call" href="tel:+923000000000">Call</a>
+  <a class="m-wa" href="https://wa.me/923000000000" target="_blank" rel="noopener">WhatsApp</a>
+  <a class="m-quote" href="#contact">Free Quote</a>
+</div>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+  const smooth=t=>t*t*(3-2*t); // smoothstep
+
+  /* nav / drawer */
+  const header=document.getElementById('header'), drawer=document.getElementById('drawer'), burger=document.getElementById('burger');
+  const openDrawer=()=>{drawer.classList.add('open');drawer.setAttribute('aria-hidden','false');burger.setAttribute('aria-expanded','true');};
+  const closeDrawer=()=>{drawer.classList.remove('open');drawer.setAttribute('aria-hidden','true');burger.setAttribute('aria-expanded','false');};
+  burger.addEventListener('click',openDrawer);
+  document.getElementById('closeDrawer').addEventListener('click',closeDrawer);
+  document.querySelectorAll('.dl').forEach(a=>a.addEventListener('click',closeDrawer));
+
+  /* reveal on scroll */
+  const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  /* count up */
+  const cIO=new IntersectionObserver((es)=>es.forEach(e=>{if(!e.isIntersecting)return;const el=e.target,target=+el.dataset.count;if(prefersReduced){el.textContent=target+'+';cIO.unobserve(el);return;}let cur=0;const step=Math.ceil(target/60);const t=setInterval(()=>{cur+=step;if(cur>=target){cur=target;clearInterval(t);}el.textContent=cur+'+';},24);cIO.unobserve(el);}),{threshold:.5});
+  document.querySelectorAll('[data-count]').forEach(c=>cIO.observe(c));
+
+  /* portfolio bg images + filter */
+  document.querySelectorAll('.port-bg[data-img]').forEach(el=>{el.style.backgroundImage="url('"+el.dataset.img+"')";});
+  const fb=document.querySelectorAll('.filter-btn'),cards=document.querySelectorAll('.port-card');
+  fb.forEach(b=>b.addEventListener('click',()=>{fb.forEach(x=>x.classList.remove('active'));b.classList.add('active');const f=b.dataset.filter;cards.forEach(c=>c.style.display=(f==='all'||c.dataset.cat===f)?'flex':'none');}));
+
+  /* FAQ */
+  document.querySelectorAll('.faq-item').forEach(item=>{
+    const q=item.querySelector('.faq-q');
+    q.addEventListener('click',()=>{
+      const open=item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i=>{i.classList.remove('open');i.querySelector('.faq-a').style.maxHeight=null;i.querySelector('.faq-q').setAttribute('aria-expanded','false');});
+      if(!open){item.classList.add('open');q.setAttribute('aria-expanded','true');const a=item.querySelector('.faq-a');a.style.maxHeight=a.scrollHeight+'px';}
+    });
+  });
+
+  /* before / after sliders */
+  document.querySelectorAll('[data-ba]').forEach(ba=>{
+    const after=ba.querySelector('[data-after]'),handle=ba.querySelector('[data-handle]');
+    let dragging=false;
+    const setPos=(clientX)=>{const r=ba.getBoundingClientRect();let p=((clientX-r.left)/r.width)*100;p=clamp(p,2,98);after.style.clipPath='inset(0 '+(100-p)+'% 0 0)';handle.style.left=p+'%';};
+    ba.addEventListener('mousedown',e=>{dragging=true;setPos(e.clientX);});
+    window.addEventListener('mousemove',e=>{if(dragging)setPos(e.clientX);});
+    window.addEventListener('mouseup',()=>dragging=false);
+    ba.addEventListener('touchstart',e=>{dragging=true;setPos(e.touches[0].clientX);},{passive:true});
+    ba.addEventListener('touchmove',e=>{if(dragging)setPos(e.touches[0].clientX);},{passive:true});
+    ba.addEventListener('touchend',()=>dragging=false);
+  });
+
+  /* =========================================================
+     APPLE/NIKE-STYLE SCROLL ENGINE
+     One rAF loop. Targets are read on scroll; rendered values
+     ease toward targets each frame for that weighted, silky feel.
+     ========================================================= */
+
+  // ---- Transformation config: swap these 5 URLs for your own room sequence ----
+  const TX_STAGES = [
+    {num:'01', label:'Bare Shell'},
+    {num:'02', label:'Colour & Paint'},
+    {num:'03', label:'Surfaces'},
+    {num:'04', label:'Furnishing'},
+    {num:'05', label:'Styled & Lit'}
+  ];
+
+  const txTrack=document.getElementById('txTrack');
+  const txImgs=[...document.querySelectorAll('.tx-img')];
+  const txStages=[...document.querySelectorAll('.tx-stage')];
+  const txBar=document.getElementById('txBar');
+  const txNum=document.getElementById('txNum');
+  const txLabel=document.getElementById('txLabel');
+  const N=txImgs.length, seg=1/(N-1);
+
+  const revealCard=document.getElementById('revealCard');
+  const revealTitle=document.getElementById('revealTitle');
+  const heroMeta=document.querySelector('.hero .wrap');
+
+  // eased (rendered) values
+  let rTx=0, rReveal=0;
+  let lastStage=-1;
+
+  function readTargets(){
+    // transform progress
+    const r=txTrack.getBoundingClientRect();
+    const total=txTrack.offsetHeight-window.innerHeight;
+    const tTx=clamp(-r.top/total,0,1);
+
+    // reveal-card progress: 0 when card enters from bottom, 1 once settled
+    const cr=revealCard.getBoundingClientRect();
+    const tReveal=clamp((window.innerHeight - cr.top)/(window.innerHeight*0.85),0,1);
+
+    return {tTx,tReveal};
+  }
+
+  function render(){
+    const {tTx,tReveal}=readTargets();
+    // ease toward targets (smaller = more lag/weight)
+    rTx += (tTx-rTx)*0.12;
+    rReveal += (tReveal-rReveal)*0.14;
+
+    /* ---- transformation cross-fade ---- */
+    const p=rTx;
+    for(let i=0;i<N;i++){
+      const center=i*seg;
+      const d=Math.abs(p-center);
+      let op=clamp(1-d/seg,0,1);
+      op=smooth(op);
+      // settle scale: inactive frames sit slightly zoomed, ease to 1 as they take focus
+      const sc=1.06-0.06*op;
+      const img=txImgs[i];
+      img.style.opacity=op.toFixed(3);
+      img.style.transform='scale('+sc.toFixed(4)+')';
+    }
+    txBar.style.width=(p*100).toFixed(2)+'%';
+    const idx=clamp(Math.round(p*(N-1)),0,N-1);
+    if(idx!==lastStage){
+      lastStage=idx;
+      txStages.forEach((s,i)=>s.classList.toggle('active',i===idx));
+      txNum.textContent=TX_STAGES[idx].num;
+      txLabel.textContent=TX_STAGES[idx].label;
+    }
+
+    /* ---- hero tilt reveal ---- */
+    if(!prefersReduced){
+      const rp=rReveal;
+      const rot=(1-rp)*16;          // 16deg -> 0
+      const scl=0.94+rp*0.06;       // 0.94 -> 1
+      revealCard.style.transform='rotateX('+rot.toFixed(2)+'deg) scale('+scl.toFixed(4)+')';
+      revealTitle.style.transform='translateY('+((1-rp)*40).toFixed(1)+'px)';
+      revealTitle.style.opacity=(0.4+rp*0.6).toFixed(3);
+    }
+
+    requestAnimationFrame(render);
+  }
+
+  // header state + initial paint
+  window.addEventListener('scroll',()=>{header.classList.toggle('scrolled',window.scrollY>40);},{passive:true});
+  if(prefersReduced){
+    // static, accessible end-states
+    txImgs.forEach((im,i)=>{im.style.opacity=i===N-1?'1':'0';});
+    txBar.style.width='100%';
+    txStages.forEach((s,i)=>s.classList.toggle('active',i===N-1));
+    txNum.textContent=TX_STAGES[N-1].num; txLabel.textContent=TX_STAGES[N-1].label;
+  }else{
+    requestAnimationFrame(render);
+  }
+
+  /* form */
+  const form=document.getElementById('quoteForm'),success=document.getElementById('formSuccess');
+  const emailRe=/^[^\s@]+@[^\s@]+\.[^\s@]+$/,phoneRe=/[0-9]{7,}/;
+  const setError=(f,on)=>f.classList.toggle('error',on);
+  form.addEventListener('submit',ev=>{
+    ev.preventDefault();let ok=true;const {name,phone,email,ptype,service}=form;
+    setError(name.closest('.field'),!name.value.trim());if(!name.value.trim())ok=false;
+    const pBad=!phoneRe.test(phone.value.replace(/\s/g,''));setError(phone.closest('.field'),pBad);if(pBad)ok=false;
+    const eBad=email.value.trim()&&!emailRe.test(email.value);setError(email.closest('.field'),eBad);if(eBad)ok=false;
+    setError(ptype.closest('.field'),!ptype.value);if(!ptype.value)ok=false;
+    setError(service.closest('.field'),!service.value);if(!service.value)ok=false;
+    if(!ok){form.querySelector('.field.error input, .field.error select')?.focus();return;}
+    // front-end only. Wire to email / WhatsApp / backend to capture submissions.
+    form.style.display='none';success.classList.add('show');success.scrollIntoView({behavior:'smooth',block:'center'});
+  });
+  form.querySelectorAll('input,select,textarea').forEach(el=>{el.addEventListener('input',()=>el.closest('.field')?.classList.remove('error'));el.addEventListener('change',()=>el.closest('.field')?.classList.remove('error'));});
+</script>
+</body>
+</html>
