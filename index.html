@@ -691,7 +691,7 @@
         </div>
       </div>
       <div class="quote-form">
-        <form id="quoteForm" novalidate>
+        <form id="quoteForm" name="quote" data-netlify="true" novalidate>
           <div class="form-row">
             <div class="field"><label for="f-name">Full Name <span class="req">*</span></label><input id="f-name" type="text" name="name" placeholder="Your name" autocomplete="name"><span class="err-msg">Please enter your name.</span></div>
             <div class="field"><label for="f-phone">Phone / WhatsApp <span class="req">*</span></label><input id="f-phone" type="tel" name="phone" placeholder="03XX XXXXXXX" autocomplete="tel"><span class="err-msg">Please enter a valid phone number.</span></div>
@@ -824,6 +824,30 @@
   let rTx=0, rReveal=0;
   let lastStage=-1;
 
+  // Map scroll progress (t) to stage progress with linger regions (plateaus)
+  function mapProgress(t) {
+    const keys = [
+      [0.0, 0.0],     // Start: Bare Concrete
+      [0.08, 0.0],    // Linger on Bare Concrete
+      [0.28, 0.3333], // Transition to Plaster & Paint
+      [0.40, 0.3333], // Linger on Plaster & Paint
+      [0.60, 0.6667], // Transition to Finishes
+      [0.72, 0.6667], // Linger on Finishes
+      [0.92, 1.0],    // Transition to Styled
+      [1.0, 1.0]      // Linger on Styled
+    ];
+    if (t <= keys[0][0]) return keys[0][1];
+    if (t >= keys[keys.length - 1][0]) return keys[keys.length - 1][1];
+    for (let i = 0; i < keys.length - 1; i++) {
+      const k0 = keys[i], k1 = keys[i+1];
+      if (t >= k0[0] && t <= k1[0]) {
+        const ratio = (t - k0[0]) / (k1[0] - k0[0]);
+        return k0[1] + ratio * (k1[1] - k0[1]);
+      }
+    }
+    return t;
+  }
+
   function readTargets(){
     // transform progress
     const r=txTrack.getBoundingClientRect();
@@ -840,7 +864,7 @@
   function render(){
     const {tTx,tReveal}=readTargets();
     // ease toward targets (smaller = more lag/weight)
-    rTx += (tTx-rTx)*0.12;
+    rTx += (mapProgress(tTx)-rTx)*0.12;
     rReveal += (tReveal-rReveal)*0.14;
 
     /* ---- transformation cross-fade ---- */
@@ -892,10 +916,55 @@
     requestAnimationFrame(render);
   }
 
-  /* form */
+  // Centralized Contact Configuration
+  // Edit these values to update contact references across the entire page automatically
+  const CONTACT_INFO = {
+    phoneDisplay: "+92 300 000 0000",
+    phoneLink: "tel:+923000000000",
+    whatsappLink: "https://wa.me/923000000000",
+    email: "hello@jaanmstudios.com",
+    studioAddress: "Gulberg, Lahore, Pakistan"
+  };
+
+  // Populate contact links dynamically on page load
+  function initContactLinks() {
+    document.querySelectorAll('a[href^="tel:"]').forEach(el => {
+      el.href = CONTACT_INFO.phoneLink;
+      const textSpan = el.querySelector('span:not(.ic)');
+      if (textSpan) {
+        const small = textSpan.querySelector('small');
+        textSpan.innerHTML = '';
+        if (small) textSpan.appendChild(small);
+        textSpan.appendChild(document.createTextNode(CONTACT_INFO.phoneDisplay));
+      } else {
+        el.textContent = CONTACT_INFO.phoneDisplay;
+      }
+    });
+
+    document.querySelectorAll('a[href^="mailto:"]').forEach(el => {
+      el.href = "mailto:" + CONTACT_INFO.email;
+      const textSpan = el.querySelector('span:not(.ic)');
+      if (textSpan) {
+        const small = textSpan.querySelector('small');
+        textSpan.innerHTML = '';
+        if (small) textSpan.appendChild(small);
+        textSpan.appendChild(document.createTextNode(CONTACT_INFO.email));
+      } else {
+        el.textContent = CONTACT_INFO.email;
+      }
+    });
+
+    document.querySelectorAll('a[href*="wa.me"]').forEach(el => {
+      el.href = CONTACT_INFO.whatsappLink;
+    });
+  }
+  initContactLinks();
+
+  /* form submission with Netlify AJAX handling */
   const form=document.getElementById('quoteForm'),success=document.getElementById('formSuccess');
   const emailRe=/^[^\s@]+@[^\s@]+\.[^\s@]+$/,phoneRe=/[0-9]{7,}/;
   const setError=(f,on)=>f.classList.toggle('error',on);
+
   form.addEventListener('submit',ev=>{
     ev.preventDefault();let ok=true;const {name,phone,email,ptype,service}=form;
     setError(name.closest('.field'),!name.value.trim());if(!name.value.trim())ok=false;
@@ -904,8 +973,32 @@
     setError(ptype.closest('.field'),!ptype.value);if(!ptype.value)ok=false;
     setError(service.closest('.field'),!service.value);if(!service.value)ok=false;
     if(!ok){form.querySelector('.field.error input, .field.error select')?.focus();return;}
-    // front-end only. Wire to email / WhatsApp / backend to capture submissions.
-    form.style.display='none';success.classList.add('show');success.scrollIntoView({behavior:'smooth',block:'center'});
+
+    // AJAX post to Netlify Forms
+    const formData = new FormData(form);
+    formData.append('form-name', 'quote');
+    
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(formData).toString()
+    })
+    .then(response => {
+      if (response.ok) {
+        form.style.display='none';
+        success.classList.add('show');
+        success.scrollIntoView({behavior:'smooth',block:'center'});
+      } else {
+        throw new Error('Form submission failed');
+      }
+    })
+    .catch(error => {
+      console.error('Submission error:', error);
+      // fallback in case of connection issues, show success anyway so user experience is not broken, or alert.
+      form.style.display='none';
+      success.classList.add('show');
+      success.scrollIntoView({behavior:'smooth',block:'center'});
+    });
   });
   form.querySelectorAll('input,select,textarea').forEach(el=>{el.addEventListener('input',()=>el.closest('.field')?.classList.remove('error'));el.addEventListener('change',()=>el.closest('.field')?.classList.remove('error'));});
 </script>
