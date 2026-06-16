@@ -839,14 +839,14 @@
   // Transition parts use smoothstep (smooth) to blend velocity into and out of plateaus
   function mapProgress(t) {
     const keys = [
-      [0.0, 0.0],     // Start: Bare Concrete
-      [0.08, 0.0],    // Linger on Bare Concrete
-      [0.28, 0.3333], // Transition to Plaster & Paint
+      [0.0,  0.0],    // Start: Bare Concrete
+      [0.10, 0.0],    // Linger on Bare Concrete
+      [0.26, 0.3333], // Transition to Plaster & Paint
       [0.40, 0.3333], // Linger on Plaster & Paint
-      [0.60, 0.6667], // Transition to Finishes
-      [0.72, 0.6667], // Linger on Finishes
-      [0.92, 1.0],    // Transition to Styled
-      [1.0, 1.0]      // Linger on Styled
+      [0.54, 0.6667], // Transition to Finishes
+      [0.66, 0.6667], // Linger on Finishes
+      [0.80, 1.0],    // Transition to Styled & Furnished (completes at 80%)
+      [1.0,  1.0]     // Long hold on the finished frame (stays pinned ~20% of track)
     ];
     if (t <= keys[0][0]) return keys[0][1];
     if (t >= keys[keys.length - 1][0]) return keys[keys.length - 1][1];
