@@ -809,22 +809,34 @@
   const txCta=document.getElementById('txCta');
   const N=txImgs.length, seg=1/(N-1);
 
-  // click a stage chip to glide there
-  txDots.forEach((d,i)=>d.addEventListener('click',()=>{
-    const total=txTrack.offsetHeight-window.innerHeight;
-    const trackTop=txTrack.getBoundingClientRect().top+window.scrollY;
-    window.scrollTo({top:Math.round(trackTop+(i/(N-1))*total), behavior:'smooth'});
-  }));
+
 
   const revealCard=document.getElementById('revealCard');
   const revealTitle=document.getElementById('revealTitle');
   const heroMeta=document.querySelector('.hero .wrap');
 
-  // eased (rendered) values
+  // eased (rendered) and target values
   let rTx=0, rReveal=0;
+  let targetTx=0, targetReveal=0;
+  let animActive=false;
   let lastStage=-1;
 
+  // Cached layout dimensions to avoid layout thrashing on scroll
+  let trackTop=0, trackHeight=0, cardTop=0, winHeight=0;
+
+  function cacheLayout() {
+    winHeight = window.innerHeight;
+    
+    const trackRect = txTrack.getBoundingClientRect();
+    trackTop = trackRect.top + window.scrollY;
+    trackHeight = txTrack.offsetHeight;
+
+    const cardRect = revealCard.getBoundingClientRect();
+    cardTop = cardRect.top + window.scrollY;
+  }
+
   // Map scroll progress (t) to stage progress with linger regions (plateaus)
+  // Transition parts use smoothstep (smooth) to blend velocity into and out of plateaus
   function mapProgress(t) {
     const keys = [
       [0.0, 0.0],     // Start: Bare Concrete
@@ -842,30 +854,55 @@
       const k0 = keys[i], k1 = keys[i+1];
       if (t >= k0[0] && t <= k1[0]) {
         const ratio = (t - k0[0]) / (k1[0] - k0[0]);
-        return k0[1] + ratio * (k1[1] - k0[1]);
+        const easedRatio = k0[1] === k1[1] ? ratio : smooth(ratio);
+        return k0[1] + easedRatio * (k1[1] - k0[1]);
       }
     }
     return t;
   }
 
-  function readTargets(){
+  // click a stage chip to glide there
+  txDots.forEach((d,i)=>d.addEventListener('click',()=>{
+    const total = trackHeight - winHeight;
+    window.scrollTo({top:Math.round(trackTop + (i/(N-1))*total), behavior:'smooth'});
+  }));
+
+  function updateTargets() {
+    const sY = window.scrollY;
+    
+    // header state
+    header.classList.toggle('scrolled', sY > 40);
+    
     // transform progress
-    const r=txTrack.getBoundingClientRect();
-    const total=txTrack.offsetHeight-window.innerHeight;
-    const tTx=clamp(-r.top/total,0,1);
+    const total = trackHeight - winHeight;
+    targetTx = total > 0 ? clamp((sY - trackTop) / total, 0, 1) : 0;
 
-    // reveal-card progress: 0 when card enters from bottom, 1 once settled
-    const cr=revealCard.getBoundingClientRect();
-    const tReveal=clamp((window.innerHeight - cr.top)/(window.innerHeight*0.85),0,1);
-
-    return {tTx,tReveal};
+    // reveal-card progress
+    targetReveal = clamp((sY + winHeight - cardTop) / (winHeight * 0.85), 0, 1);
+    
+    // Start animation loop if not active
+    if (!animActive && !prefersReduced) {
+      animActive = true;
+      requestAnimationFrame(render);
+    }
   }
 
   function render(){
-    const {tTx,tReveal}=readTargets();
-    // ease toward targets (smaller = more lag/weight)
-    rTx += (mapProgress(tTx)-rTx)*0.12;
-    rReveal += (tReveal-rReveal)*0.14;
+    // Map raw scroll target using our smooth pacing curve
+    const mappedTarget = mapProgress(targetTx);
+    
+    const diffTx = mappedTarget - rTx;
+    const diffReveal = targetReveal - rReveal;
+
+    // Halt loop once eased values settle
+    if (Math.abs(diffTx) < 0.0001 && Math.abs(diffReveal) < 0.0001) {
+      rTx = mappedTarget;
+      rReveal = targetReveal;
+      animActive = false;
+    } else {
+      rTx += diffTx * 0.12;
+      rReveal += diffReveal * 0.14;
+    }
 
     /* ---- transformation cross-fade ---- */
     const p=rTx;
@@ -874,7 +911,6 @@
       const d=Math.abs(p-center);
       let op=clamp(1-d/seg,0,1);
       op=smooth(op);
-      // settle scale: inactive frames sit slightly zoomed, ease to 1 as they take focus
       const sc=1.06-0.06*op;
       const img=txImgs[i];
       img.style.opacity=op.toFixed(3);
@@ -882,6 +918,7 @@
     }
     txBar.style.width=(p*100).toFixed(2)+'%';
     if(txCta)txCta.classList.toggle('show',p>0.74);
+    
     const idx=clamp(Math.round(p*(N-1)),0,N-1);
     if(idx!==lastStage){
       lastStage=idx;
@@ -893,18 +930,24 @@
     /* ---- hero tilt reveal ---- */
     if(!prefersReduced){
       const rp=rReveal;
-      const rot=(1-rp)*16;          // 16deg -> 0
-      const scl=0.94+rp*0.06;       // 0.94 -> 1
+      const rot=(1-rp)*16;
+      const scl=0.94+rp*0.06;
       revealCard.style.transform='rotateX('+rot.toFixed(2)+'deg) scale('+scl.toFixed(4)+')';
       revealTitle.style.transform='translateY('+((1-rp)*40).toFixed(1)+'px)';
       revealTitle.style.opacity=(0.4+rp*0.6).toFixed(3);
     }
 
-    requestAnimationFrame(render);
+    if (animActive) {
+      requestAnimationFrame(render);
+    }
   }
 
-  // header state + initial paint
-  window.addEventListener('scroll',()=>{header.classList.toggle('scrolled',window.scrollY>40);},{passive:true});
+  // Initialize layout cache, scroll listener, and first paint
+  cacheLayout();
+  window.addEventListener('resize', cacheLayout, { passive: true });
+  window.addEventListener('scroll', updateTargets, { passive: true });
+  updateTargets();
+
   if(prefersReduced){
     // static, accessible end-states
     txImgs.forEach((im,i)=>{im.style.opacity=i===N-1?'1':'0';});
@@ -912,11 +955,9 @@
     txDots.forEach((s,i)=>s.classList.toggle('active',i===N-1));
     txNum.textContent=TX_STAGES[N-1].num; txLabel.textContent=TX_STAGES[N-1].label;
     if(txCta)txCta.classList.add('show');
-  }else{
-    requestAnimationFrame(render);
   }
 
-  // Centralized Contact Configuration
+    // Centralized Contact Configuration
   // Edit these values to update contact references across the entire page automatically
   const CONTACT_INFO = {
     phoneDisplay: "+92 300 000 0000",
